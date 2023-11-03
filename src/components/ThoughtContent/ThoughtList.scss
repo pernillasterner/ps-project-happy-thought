@@ -44,6 +44,22 @@
     font-family: "Roboto Mono", monospace;
     box-shadow: 7px 7px;
 
+    &:first-child .like-button {
+      background-image: radial-gradient(
+        circle at left,
+        rgba(255, 153, 102, 1) 0%,
+        rgb(242, 148, 190) 20%,
+        rgba(255, 102, 102, 1) 30%
+      );
+      background-size: 300% 50%;
+      animation: bounce 2s ease-in-out infinite;
+
+      .emoji {
+        animation: heartbeat 1.5s ease-in-out infinite;
+        transition: transform 0.2s ease-in-out;
+      }
+    }
+
     .info-wrapper {
       display: flex;
       justify-content: space-between;
@@ -68,19 +84,7 @@
       align-items: center;
       cursor: pointer;
       box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-      background-image: radial-gradient(
-        circle at left,
-        rgba(255, 153, 102, 1) 0%,
-        rgb(242, 148, 190) 20%,
-        rgba(255, 102, 102, 1) 30%
-      );
-      background-size: 300% 50%;
-      animation: bounce 2s ease-in-out infinite;
-
-      .emoji {
-        animation: heartbeat 1.5s ease-in-out infinite;
-        transition: transform 0.2s ease-in-out;
-      }
+      background-color: lightgrey;
     }
 
     .num-likes,
