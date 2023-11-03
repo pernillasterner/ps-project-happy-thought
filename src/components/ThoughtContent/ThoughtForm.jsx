@@ -10,28 +10,36 @@ import { makePostRequest } from "../Api";
 import "./ThoughtForm.scss";
 
 export const ThoughtForm = () => {
-  const [messageContent, setMessageContent] = useState("");
-  let errorMessage = "";
+  const [message, setMessage] = useState("");
+  const [messageList, setMessageList] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e) => {
-    // e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     // Handle form validation
     const validStringRegex = /^[A-Za-z0-9\s!.,?'"]*$/;
 
-    if (!validStringRegex.test(messageContent)) {
-      errorMessage = "The string contains invalid characters";
-    } else if (messageContent.length < 5) {
-      errorMessage =
-        "Your message is too short, it needs at least 5 letters 😔";
-    } else if (messageContent.length > 140) {
-      errorMessage = "Your message is too long 😔";
+    if (!validStringRegex.test(message)) {
+      setErrorMessage("The string contains invalid characters");
+    } else if (message.length < 5) {
+      setErrorMessage(
+        "Your message is too short, it needs at least 5 letters 😔"
+      );
+    } else if (message.length > 140) {
+      setErrorMessage("Your message is too long 😔");
     } else {
-      // Handle form submission
-      makePostRequest(messageContent);
-      setMessageContent("");
+      // Handle form submission and wait for the response
+      const newMessage = await makePostRequest(message);
+
+      if (newMessage) {
+        // Update the origin message list with the new message
+        setMessageList([newMessage, ...messageList]);
+        // Clear the input field
+        setMessage("");
+        errorMessage = "";
+      }
     }
-    return errorMessage;
   };
 
   return (
@@ -40,13 +48,13 @@ export const ThoughtForm = () => {
       <form onSubmit={handleSubmit}>
         <label>
           <textarea
-            name="messageContent"
+            name="message"
             rows={3}
             placeholder="'If music be the food of love, play on.' – William Shakespeare"
             width={454}
             height={76}
             required={true}
-            onChange={(e) => setMessageContent(e.target.value)}
+            onChange={(e) => setMessage(e.target.value)}
           />
         </label>
         <div className="post-length">
