@@ -1,8 +1,8 @@
 /**
  * 1. Add template and styling ✅
- * 2. Import makePostRequest function and post a request to the server
- * 3. Handle validation errors
- * 4. Check that the characters are more than 5 and less than 140.
+ * 2. Import makePostRequest function and post a request to the server ✅
+ * 3. Handle validation errors ✅
+ * 4. Check that the characters are more than 5 and less than 140. ✅
  * 5. Make 0 / 140 count up while typing
  */
 import { useState } from "react";
@@ -11,10 +11,10 @@ import "./ThoughtForm.scss";
 
 export const ThoughtForm = () => {
   const [messageContent, setMessageContent] = useState("");
-  const errorMessage = "";
+  let errorMessage = "";
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     // Handle form validation
     const validStringRegex = /^[A-Za-z0-9\s!.,?'"]*$/;
@@ -27,12 +27,11 @@ export const ThoughtForm = () => {
     } else if (messageContent.length > 140) {
       errorMessage = "Your message is too long 😔";
     } else {
-      // Content is valid. Continue with post
-      const messages = makePostRequest(messageContent);
-      console.log(messages);
+      // Handle form submission
+      makePostRequest(messageContent);
+      setMessageContent("");
     }
-
-    // Handle form submission
+    return errorMessage;
   };
 
   return (
