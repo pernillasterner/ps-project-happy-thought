@@ -5,26 +5,24 @@
  */
 
 import { useEffect, useState } from "react";
+import { makeGetRequest } from "../Api";
 import { ThoughtList } from "./ThoughtList";
 
 export const ThoughtContent = () => {
-  const apiUrl = "https://happy-thoughts-ux7hkzgmwa-uc.a.run.app/thoughts";
   const [thoughts, setThoughts] = useState([]);
 
   // Fetch the latest thought from the API
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch(apiUrl);
-        const data = await res.json();
+    makeGetRequest()
+      .then((data) => {
         setThoughts(data);
-      } catch (err) {
-        console.error("Error fetching data", err);
-      }
-    };
-    fetchData();
+      })
+      .catch((error) => {
+        console.log("No thoughts found", error);
+      });
   }, []);
 
+  console.log(thoughts);
   return (
     <>
       <div>The Form: send the apiURL as a props</div>
