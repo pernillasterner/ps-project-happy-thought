@@ -37,3 +37,20 @@ export const makePostRequest = async (thought) => {
     throw error;
   }
 };
+
+export const makeLikeRequest = async (id) => {
+  try {
+    const res = await fetch(apiUrl + `/${id}/like`, {
+      method: "POST",
+    });
+
+    if (res.ok) {
+      return res.json();
+    } else {
+      console.log("Failed to post message", res);
+    }
+  } catch (error) {
+    console.error("Error posting message:", error);
+    throw error;
+  }
+};
