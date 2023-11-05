@@ -3,11 +3,11 @@
  * 2. Import ThoughtFrom and ThoughtList ✅
  * 3. Send in the thoughts to ThoughtList ✅
  * 4. Add a loader ✅
- * 5. Add setInterval and clearInterval
+ * 5. Add setInterval and clearInterval ✅
  */
 
 import { useEffect, useState } from "react";
-import { makeGetRequest, initializingThoughtFetching } from "../Api";
+import { makeGetRequest } from "../Api";
 import { ThoughtList } from "./ThoughtList";
 import { ThoughtForm } from "./ThoughtForm";
 
@@ -17,15 +17,25 @@ export const ThoughtContent = () => {
 
   // Fetch the latest thought from the API
   useEffect(() => {
-    makeGetRequest()
-      .then((data) => {
+    const fetchThoughts = async () => {
+      try {
+        const data = await makeGetRequest();
         setThoughts(data);
         setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.log("No thoughts found", error);
         setLoading(true);
-      });
+      }
+    };
+
+    // Initial fetch when the component mounts
+    fetchThoughts();
+
+    const interval = setInterval(() => {
+      fetchThoughts();
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
