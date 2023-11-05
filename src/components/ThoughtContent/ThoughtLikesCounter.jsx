@@ -18,7 +18,7 @@ export const ThoughtLikesCounter = ({ thoughts }) => {
         initialLikedPostsCount++;
       }
     });
-
+    // Update the state with updated likes
     setLikedPostsCount(initialLikedPostsCount);
   }, [thoughts]);
 

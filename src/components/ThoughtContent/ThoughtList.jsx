@@ -25,8 +25,17 @@ export const ThoughtList = ({ thoughts }) => {
 
   const handleLikes = async (id) => {
     try {
+      // Check if the post has been liked before
+      const hasLikedBefore = localStorage.getItem(`liked_${id}`);
+
+      // Only do this if the post has not been liked before
+
       // Send a POST request to update the likes
       await makeLikeRequest(id);
+
+      // Update the likes in local storage
+      localStorage.setItem(`liked_${id}`, "true");
+      localStorage.setItem(`likes_${id}`, likes[id] + 1);
 
       // Update the likes in component state
       setLikes((prevLikes) => ({
@@ -71,7 +80,7 @@ export const ThoughtList = ({ thoughts }) => {
               </button>
               {/* update the num of likes */}
               <span className="num-likes">
-                {thought.hearts + likes[thought._id] || 0}x
+                {thought.hearts + likes[thought._id]}x
               </span>
             </div>
             <div className="info-time">
