@@ -28,8 +28,6 @@ export const ThoughtList = ({ thoughts }) => {
       // Check if the post has been liked before
       const hasLikedBefore = localStorage.getItem(`liked_${id}`);
 
-      // Only do this if the post has not been liked before
-
       // Send a POST request to update the likes
       await makeLikeRequest(id);
 
