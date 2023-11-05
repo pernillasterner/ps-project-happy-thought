@@ -14,13 +14,19 @@ export const ThoughtForm = () => {
   const [message, setMessage] = useState("");
   //   const [messageList, setMessageList] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
-
   const charMinLimit = 5;
-  const charMaxLimit = 9;
+  const charMaxLimit = 140;
 
-  const handleInputChange = (message) => {
-    if (message.length >= charMaxLimit) {
-      return setErrorMessage("Your message is too long 😔");
+  // Need to handle about of characters before hitting submit
+  const handleInputChange = (e) => {
+    // Grab the input value an add it to setMessage
+    const inputValue = e.target.value;
+    setMessage(inputValue);
+
+    if (inputValue.length >= charMaxLimit) {
+      setErrorMessage("Your message is too long 😔");
+    } else {
+      setErrorMessage("");
     }
   };
 
@@ -67,17 +73,15 @@ export const ThoughtForm = () => {
             height={76}
             required={true}
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={handleInputChange}
           />
         </label>
         <div className="post-length">
           <p className="error">{errorMessage}</p>
           <p
-            className={`length ${
-              message.length > charMaxLimit ? "error" : ""
-            } `}
+            className={`length ${message.length > charMaxLimit ? "red" : ""} `}
           >
-            {handleInputChange(message.length)} / 140
+            {message.length} / 140
           </p>
         </div>
         <button
