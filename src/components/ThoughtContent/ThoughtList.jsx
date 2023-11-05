@@ -1,13 +1,14 @@
 /**
  * 1. Import styling file ✅
  * 2. Get the thoughts and render them in a list ✅
- * 3. Listen to the like button and add an onClick event to it will incease each time.
+ * 3. Listen to the like button and add an onClick event to it will incease each time. ✅
  * 4. At date-fns to update the time when the thought was created. Use date-fns that is more lightweight. Install npm install date-fns ✅
  */
 import { useState, useEffect } from "react";
 import { makeLikeRequest } from "../Api";
 import { formatDistanceToNow } from "date-fns";
 import { enUS } from "date-fns/locale";
+import { ThoughtLikesCounter } from "./ThoughtLikesCounter";
 import "./ThoughtList.scss";
 
 export const ThoughtList = ({ thoughts }) => {
@@ -49,6 +50,7 @@ export const ThoughtList = ({ thoughts }) => {
 
   return (
     <div className="list-wrapper">
+      <ThoughtLikesCounter thoughts={thoughts} />
       {thoughts.map((thought) => (
         <div key={thought._id} className="message">
           <p>{thought.message}</p>
@@ -69,7 +71,7 @@ export const ThoughtList = ({ thoughts }) => {
               </button>
               {/* update the num of likes */}
               <span className="num-likes">
-                {thought.hearts + likes[thought._id]}x
+                {thought.hearts + likes[thought._id] || 0}x
               </span>
             </div>
             <div className="info-time">
