@@ -3,7 +3,8 @@
  * 2. Import makePostRequest function and post a request to the server ✅
  * 3. Handle validation errors ✅
  * 4. Check that the characters are more than 5 and less than 140. ✅
- * 5. Make 0 / 140 count up while typing
+ * 5. Make 0 / 140 count up while typing ✅
+ * 6. Change the color of 1 / 140 if more than 140 characters ✅
  */
 import { useState } from "react";
 import { makePostRequest } from "../Api";
@@ -11,8 +12,17 @@ import "./ThoughtForm.scss";
 
 export const ThoughtForm = () => {
   const [message, setMessage] = useState("");
-  const [messageList, setMessageList] = useState([]);
+  //   const [messageList, setMessageList] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const charMinLimit = 5;
+  const charMaxLimit = 9;
+
+  const handleInputChange = (message) => {
+    if (message.length >= charMaxLimit) {
+      return setErrorMessage("Your message is too long 😔");
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,23 +32,25 @@ export const ThoughtForm = () => {
 
     if (!validStringRegex.test(message)) {
       setErrorMessage("The string contains invalid characters");
-    } else if (message.length < 5) {
+    } else if (message.length < charMinLimit) {
       setErrorMessage(
         "Your message is too short, it needs at least 5 letters 😔"
       );
-    } else if (message.length > 140) {
+    } else if (message.length >= charMaxLimit) {
       setErrorMessage("Your message is too long 😔");
     } else {
       // Handle form submission and wait for the response
-      const newMessage = await makePostRequest(message);
+      makePostRequest(message);
+      //   const newMessage = await makePostRequest(message);
 
-      if (newMessage) {
-        // Update the origin message list with the new message
-        setMessageList([newMessage, ...messageList]);
-        // Clear the input field
-        setMessage("");
-        errorMessage = "";
-      }
+      //   if (newMessage) {
+      //     // Update the origin message list with the new message
+      //     setMessageList([newMessage, ...messageList]);
+      //     // Clear the input field
+      //     setMessage("");
+      //   }
+      setMessage("");
+      setErrorMessage("");
     }
   };
 
@@ -54,12 +66,19 @@ export const ThoughtForm = () => {
             width={454}
             height={76}
             required={true}
+            value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
         </label>
         <div className="post-length">
           <p className="error">{errorMessage}</p>
-          <p className="length">0 / 140</p>
+          <p
+            className={`length ${
+              message.length > charMaxLimit ? "error" : ""
+            } `}
+          >
+            {handleInputChange(message.length)} / 140
+          </p>
         </div>
         <button
           id="submitPostBtn"
